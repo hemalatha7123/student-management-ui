@@ -1,0 +1,57 @@
+
+<h3>{{ courseId ? 'Edit Course' : 'Add Course' }}</h3>
+
+<form #courseForm="ngForm"
+      (ngSubmit)="saveCourse()">
+    <div>
+    <label>Course Name</label>
+    <input
+        type="text"
+        name="courseName"
+        [(ngModel)]="course.courseName"
+        required />
+    </div>
+    <div>
+    <label>Course Code</label>
+    <input
+        type="text"
+        name="courseCode"
+        [(ngModel)]="course.courseCode"
+        required />
+    </div>
+    <div>
+    <label>Description</label>
+    <textarea
+        name="description"
+        [(ngModel)]="course.description">
+    </textarea>
+    </div>
+    <div>
+    <label>Duration (Months)</label>
+    <input
+        type="number"
+        name="duration"
+        [(ngModel)]="course.duration"
+        required
+        min="1" />
+    </div>
+    <div>
+    <label>Status</label>
+    <select
+        name="status"
+        [(ngModel)]="course.status">
+        <option value="ACTIVE">ACTIVE</option>
+        <option value="INACTIVE">INACTIVE</option>
+    </select>
+    </div>
+  <div>
+    <button type="submit" [disabled]="courseForm.invalid">
+        Save Course
+    </button>
+
+    <button type="button" (click)="courseSaved.emit()">
+        Refresh
+    </button>
+  </div>
+
+</form>

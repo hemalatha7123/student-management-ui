@@ -1,0 +1,67 @@
+
+<h3>
+  {{ studentId ? 'Edit Student' : 'Add Student' }}
+</h3>
+
+<form [formGroup]="studentForm"
+      (ngSubmit)="saveStudent()">
+
+  <div>
+    <label>First Name</label>
+
+    <input
+      type="text"
+      formControlName="firstName">
+
+    @if (studentForm.get('firstName')?.touched &&
+         studentForm.get('firstName')?.invalid) {
+
+      <span>First name is required</span>
+
+    }
+  </div>
+
+  <div>
+    <label>Last Name</label>
+
+    <input
+      type="text"
+      formControlName="lastName">
+  </div>
+
+  <div>
+    <label>Email</label>
+
+    <input
+      type="email"
+      formControlName="email">
+
+    @if (studentForm.get('email')?.touched &&
+         studentForm.get('email')?.invalid) {
+
+      <span>Enter a valid email address</span>
+
+    }
+  </div>
+
+  <div>
+    <label>Phone</label>
+
+    <input
+      type="text"
+      formControlName="phone">
+  </div>
+
+  <div>
+    <label>Date of Birth</label>
+
+    <input
+      type="date"
+      formControlName="dateOfBirth">
+  </div>
+
+  <button type="submit">
+    {{ studentId ? 'Update Student' : 'Save Student' }}
+  </button>
+
+</form>

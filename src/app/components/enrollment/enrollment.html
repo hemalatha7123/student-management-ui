@@ -1,0 +1,120 @@
+
+<div class="enrollment-container">
+
+  <h2>Student Course Enrollment</h2>
+
+  <!-- Student Selection -->
+  <div class="form-group">
+
+    <label>Select Student</label>
+
+    <select
+      [(ngModel)]="selectedStudentId"
+      (ngModelChange)="onStudentChange()">
+
+      <option [ngValue]="null">
+        -- Select Student --
+      </option>
+
+      <option
+        *ngFor="let student of students"
+        [ngValue]="student.id">
+
+        {{ student.firstName }} {{ student.lastName}}
+
+      </option>
+
+    </select>
+
+  </div>
+
+  <!-- Course Selection -->
+  <div *ngIf="selectedStudentId !== null">
+
+    <h3>Available Courses</h3>
+
+    <div class="course-grid">
+
+      <div
+        class="course-card"
+        *ngFor="let course of courses">
+
+        <input
+          type="checkbox"
+          [id]="'course-' + course.id"
+          [checked]="selectedCourseIds.includes(course.id!)"
+          [disabled]="isAlreadyEnrolled(course.id!)"
+          (change)="toggleCourse(
+            course.id!,
+            $any($event.target).checked
+          )" />
+
+        <label [for]="'course-' + course.id">
+
+          <strong>{{ course.courseName }}</strong>
+
+          <p>Code: {{ course.courseCode }}</p>
+
+          <p>Duration: {{ course.duration }} months</p>
+
+          <span *ngIf="isAlreadyEnrolled(course.id!)">
+            Already Enrolled
+          </span>
+
+        </label>
+
+      </div>
+
+    </div>
+
+    <button
+      (click)="enrollCourses()"
+      [disabled]="loading || selectedCourseIds.length === 0">
+
+      {{ loading ? 'Enrolling...' : 'Enroll Selected Courses' }}
+
+    </button>
+
+    <p>{{ message }}</p>
+
+    <!-- Existing Enrollments -->
+    <h3>Enrolled Courses</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Course Code</th>
+          <th>Course Name</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let enrollment of enrollments">
+
+          <td>{{ enrollment.courseCode }}</td>
+
+          <td>{{ enrollment.courseName }}</td>
+
+          <td>
+            <button
+              (click)="removeEnrollment(enrollment.id!)">
+              Remove
+            </button>
+          </td>
+
+        </tr>
+
+        <tr *ngIf="enrollments.length === 0">
+          <td colspan="3">
+            No courses enrolled yet.
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+
+  </div>
+
+</div>
