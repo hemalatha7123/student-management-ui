@@ -21,6 +21,7 @@ import { StudentForm } from
   templateUrl: './student-list.html'
 
 })
+
 export class StudentList implements OnInit {
 
   students: Student[] = [];
@@ -38,7 +39,9 @@ export class StudentList implements OnInit {
 
         next: (data) => {
           console.log('Refreshing student list:', data);
-          this.students = data;
+          this.students = data.filter(
+                            student => student.status === 'ACTIVE'
+                          );
         },
 
         error: (error) => {
@@ -73,6 +76,23 @@ export class StudentList implements OnInit {
     console.log('Child component notified parent to refresh');
     this.selectedStudentId = null;
     this.loadStudents();
+  }
+
+  deleteStudent(id: number): void {
+
+        if (!confirm('Are you sure you want to delete this student?')) {
+          return;
+        }
+    
+        this.studentService.deleteStudent(id).subscribe({
+          next: () => {
+            this.loadStudents();
+          },
+          error: (error) => {
+            console.error('Error deleting student', error);
+          }
+        });
+      
   }
 
 }

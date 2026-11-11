@@ -33,7 +33,9 @@ export class CourseList implements OnInit {
   loadCourses(): void {
     this.courseService.getAllCourses().subscribe({
       next: (data) => {
-        this.courses = data;
+        this.courses = data.filter(
+                  course => course.status === 'ACTIVE'
+                );
       },
       error: (error) => {
         console.error('Error loading courses', error);
