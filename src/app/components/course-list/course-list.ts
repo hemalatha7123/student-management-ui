@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Course } from '../../models/course.model';
 import { CourseService } from '../../services/course';
@@ -19,7 +19,8 @@ export class CourseList implements OnInit {
 
   showForm = false;
 
-  constructor(private courseService: CourseService) {}
+  constructor(private courseService: CourseService, 
+    private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.loadCourses();
@@ -36,6 +37,8 @@ export class CourseList implements OnInit {
         this.courses = data.filter(
                   course => course.status === 'ACTIVE'
                 );
+        // Notify Angular to update the view
+        this.cdr.markForCheck();
       },
       error: (error) => {
         console.error('Error loading courses', error);

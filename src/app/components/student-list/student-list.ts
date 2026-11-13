@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 
 import { Student } from
   '../../models/student.model';
@@ -29,7 +29,8 @@ export class StudentList implements OnInit {
   selectedStudentId: number | null = null;
 
   constructor(
-    private studentService: StudentService
+    private studentService: StudentService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   loadStudents(): void {
@@ -42,6 +43,9 @@ export class StudentList implements OnInit {
           this.students = data.filter(
                             student => student.status === 'ACTIVE'
                           );
+          console.log('Students list output:', this.students);
+          // Notify Angular to update the view
+          this.cdr.markForCheck();
         },
 
         error: (error) => {
@@ -55,6 +59,7 @@ export class StudentList implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('StudentListComponent initialized');
     this.loadStudents();
   }
 

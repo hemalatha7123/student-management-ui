@@ -6,13 +6,15 @@ import { provideHttpClient, withInterceptors }
   from '@angular/common/http';
 import { errorInterceptor }
   from './interceptors/error.interceptor';
+import { authInterceptor }
+  from './interceptors/auth-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes), provideClientHydration(),
     provideHttpClient(
-      withInterceptors([errorInterceptor])
+      withInterceptors([authInterceptor, errorInterceptor])
     )
   ]
 };

@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { forkJoin, of } from 'rxjs';
@@ -44,18 +44,21 @@ export class EnrollmentComponent implements OnInit {
   constructor(
     private studentService: StudentService,
     private courseService: CourseService,
-    private enrollmentService: EnrollmentService
+    private enrollmentService: EnrollmentService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.loadStudents();
     this.loadCourses();
+    this.cdr.markForCheck();
   }
 
   loadStudents(): void {
     this.studentService.getStudents().subscribe({
       next: (data) => {
         this.students = data;
+        this.cdr.markForCheck();
       },
       error: (error) => {
         console.error('Error loading students', error);
@@ -100,6 +103,7 @@ export class EnrollmentComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.enrollments = data;
+          this.cdr.markForCheck();
         },
         error: (error) => {
           console.error('Error loading enrollments', error);
@@ -165,6 +169,7 @@ export class EnrollmentComponent implements OnInit {
         this.selectedCourseIds = [];
         this.message = 'Courses enrolled successfully!';
         this.loading = false;
+        this.cdr.markForCheck();
       },
       error: (error) => {
         console.error('Enrollment failed', error);
